@@ -37,6 +37,7 @@ public abstract class MessageHandler {
 			return;
 		}
 		task.setImageUrl(getImageUrl(message));
+		// 将文件转存到七牛云中
 		task.setProperty(Constants.TASK_PROPERTY_FINAL_PROMPT, finalPrompt);
 		finishTask(task, message);
 		task.awake();

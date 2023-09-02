@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -70,7 +71,13 @@ public class NotifyServiceImpl implements NotifyService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> httpEntity = new HttpEntity<>(paramsJson, headers);
-		return new RestTemplate().postForEntity(notifyHook, httpEntity, String.class);
+		RestTemplate restTemplate = new RestTemplate();
+		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+		factory.setProxy(null);
+		factory.setConnectTimeout(30000);
+		factory.setReadTimeout(100);
+		restTemplate.setRequestFactory(factory);
+		return restTemplate.postForEntity(notifyHook, httpEntity, String.class);
 	}
 
 }

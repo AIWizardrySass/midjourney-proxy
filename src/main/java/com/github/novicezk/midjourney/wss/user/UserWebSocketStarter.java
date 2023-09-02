@@ -88,6 +88,7 @@ public class UserWebSocketStarter extends WebSocketAdapter implements WebSocketS
 		}
 		String json = new String(decompressBinary, StandardCharsets.UTF_8);
 		DataObject data = DataObject.fromJson(json);
+//		log.debug("receive message,{}", json);
 		int opCode = data.getInt("op");
 		if (opCode != WebSocketCode.HEARTBEAT_ACK) {
 			this.sequence.incrementAndGet();
