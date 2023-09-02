@@ -17,3 +17,4 @@ mj:
   proxy:
     host: 172.20.0.1
     port: 7078
+  translate-way: null
