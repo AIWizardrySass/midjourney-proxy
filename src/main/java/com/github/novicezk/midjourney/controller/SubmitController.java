@@ -209,6 +209,7 @@ public class SubmitController {
 		String notifyHook = CharSequenceUtil.isBlank(base.getNotifyHook()) ? this.properties.getNotifyHook() : base.getNotifyHook();
 		task.setProperty(Constants.TASK_PROPERTY_NOTIFY_HOOK, notifyHook);
 		task.setProperty(Constants.TASK_PROPERTY_NONCE, SnowFlake.INSTANCE.nextId());
+		task.setTag(base.getTag());
 		return task;
 	}
 

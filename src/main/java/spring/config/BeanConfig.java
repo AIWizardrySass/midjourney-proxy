@@ -1,13 +1,17 @@
 package spring.config;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.github.novicezk.midjourney.ProxyProperties;
+import com.github.novicezk.midjourney.domain.DiscordAccount;
 import com.github.novicezk.midjourney.loadbalancer.rule.IRule;
+import com.github.novicezk.midjourney.service.DiscordAccountStoreService;
 import com.github.novicezk.midjourney.service.NotifyService;
 import com.github.novicezk.midjourney.service.TaskStoreService;
 import com.github.novicezk.midjourney.service.TranslateService;
 import com.github.novicezk.midjourney.service.store.InMemoryTaskStoreServiceImpl;
+import com.github.novicezk.midjourney.service.store.RedisAccountStoreService;
 import com.github.novicezk.midjourney.service.store.RedisTaskStoreServiceImpl;
 import com.github.novicezk.midjourney.service.translate.BaiduTranslateServiceImpl;
 import com.github.novicezk.midjourney.service.translate.GPTTranslateServiceImpl;
@@ -24,9 +28,12 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +66,11 @@ public class BeanConfig {
 	}
 
 	@Bean
+	DiscordAccountStoreService discordAccountStoreService(RedisConnectionFactory redisConnectionFactory) {
+		return new RedisAccountStoreService(accountRedisTemplate(redisConnectionFactory));
+	}
+
+	@Bean
 	RedisTemplate<String, Task> taskRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
 		RedisTemplate<String, Task> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -68,9 +80,27 @@ public class BeanConfig {
 		return redisTemplate;
 	}
 
+
+	@Bean
+	RedisTemplate<String, DiscordAccount> accountRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+		RedisTemplate<String, DiscordAccount> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setConnectionFactory(redisConnectionFactory);
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(DiscordAccount.class));
+		return redisTemplate;
+	}
+
 	@Bean
 	public RestTemplate restTemplate() {
-		return new RestTemplate();
+		RestTemplate restTemplate = new RestTemplate();
+		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+		if (CharSequenceUtil.isNotBlank(properties.getProxy().getHost())) {
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(properties.getProxy().getHost(), properties.getProxy().getPort()));
+			factory.setProxy(proxy);
+		}
+		restTemplate.setRequestFactory(factory);
+		return restTemplate;
 	}
 
 	@Bean

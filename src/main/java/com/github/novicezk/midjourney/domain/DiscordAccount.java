@@ -31,8 +31,16 @@ public class DiscordAccount extends DomainObject {
 	@ApiModelProperty("任务超时时间(分钟)")
 	private int timeoutMinutes = 5;
 
+	@ApiModelProperty("服务器标签")
+	private String tag;
+
 	@JsonIgnore
 	public String getDisplay() {
 		return this.channelId;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+
 	}
 }

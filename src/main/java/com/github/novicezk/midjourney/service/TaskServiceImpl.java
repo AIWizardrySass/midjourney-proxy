@@ -26,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public SubmitResultVO submitImagine(Task task, List<DataUrl> dataUrls) {
-		DiscordInstance instance = this.discordLoadBalancer.chooseInstance();
+		DiscordInstance instance = this.discordLoadBalancer.chooseInstance(task.getTag());
 		if (instance == null) {
 			return SubmitResultVO.fail(ReturnCode.NOT_FOUND, "无可用的账号实例");
 		}
@@ -88,7 +88,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public SubmitResultVO submitDescribe(Task task, DataUrl dataUrl) {
-		DiscordInstance discordInstance = this.discordLoadBalancer.chooseInstance();
+		DiscordInstance discordInstance = this.discordLoadBalancer.chooseInstance(task.getTag());
 		if (discordInstance == null) {
 			return SubmitResultVO.fail(ReturnCode.NOT_FOUND, "无可用的账号实例");
 		}
@@ -106,7 +106,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public SubmitResultVO submitBlend(Task task, List<DataUrl> dataUrls, BlendDimensions dimensions) {
-		DiscordInstance discordInstance = this.discordLoadBalancer.chooseInstance();
+		DiscordInstance discordInstance = this.discordLoadBalancer.chooseInstance(task.getTag());
 		if (discordInstance == null) {
 			return SubmitResultVO.fail(ReturnCode.NOT_FOUND, "无可用的账号实例");
 		}

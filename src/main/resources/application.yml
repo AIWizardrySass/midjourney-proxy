@@ -1,20 +1,45 @@
 mj:
-#  api-secret: dea554f25d16765864dbddee641e8741
-  discord:
-    guild-id: 1146387141815959642
-    channel-id: 1146387142306701344
-    user-token: MTEwNzI2MzE4OTY0Njg1MjE4Ng.GsV8zF.eYKvbbjj6_peFeTCpJtreIknFOGmPwu7fpO4xo
-    session-id: 720b71d87fe71093b1b87e80ed837ce7
-    user-wss: true
-    user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36
+  accounts:
+    - guild-id: 1146387141815959642
+      channel-id: 1146387142306701344
+      user-token: MTEwNzI2MzE4OTY0Njg1MjE4Ng.GM9S9K.2X05HM3MlixPJziiLBvGmALfn9h-RCaik0q3WY
+      session-id: 3da5182e4e2fd4956716b8113e0e40f5
+      user-wss: true
+      user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36
+      core-size: 3
+      queue-size: 10
+      timeout-minutes: 5
+      tag: fast
+
+    - guild-id: 1146379186051747880
+      channel-id: 1146379186051747882
+      user-token: MTEwNzI2MzE4OTY0Njg1MjE4Ng.GM9S9K.2X05HM3MlixPJziiLBvGmALfn9h-RCaik0q3WY
+      session-id: 8d8bf0a8567ded252b6cad6047b6fadb
+      user-wss: true
+      user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+      core-size: 3
+      queue-size: 10
+      timeout-minutes: 5
+      tag: slow
+
   task-store:
     type: in_memory
     timeout: 30d
-  queue:
-    timeout-minutes: 5
-    core-size: 3
-    queue-size: 10
+
   proxy:
-    host: 172.20.0.1
-    port: 7078
-  translate-way: null
+    host: ${PROXY_HOST:121.36.231.75}
+    port: ${PROXY_PORT:7078}
+
+  translate-way: baidu
+  translate-zh-way: baidu
+  baidu-translate:
+    appid: 20230827001795082
+    app-secret: Gw1nyDvm8LuTF7x3qVyV
+
+spring:
+  redis:
+    host: ${REDIS_HOST:124.71.181.91}
+    # Redis服务器连接端口
+    port: ${REDIS_PORT:6379}
+    # Redis服务器连接密码（默认为空）
+    password: ${REDIS_PASSWORD:AIWizardry@123}

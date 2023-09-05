@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class ProxyProperties {
 	/**
 	 * discord账号选择规则.
 	 */
-	private String accountChooseRule = "BestWaitIdleRule";
+	private String accountChooseRule = "TagMatchRule";
 	/**
 	 * discord单账号配置.
 	 */
@@ -63,7 +64,7 @@ public class ProxyProperties {
 	private int notifyPoolSize = 10;
 
 	@Data
-	public static class DiscordAccountConfig {
+	public static class DiscordAccountConfig implements Serializable {
 		/**
 		 * 服务器ID.
 		 */
@@ -96,6 +97,11 @@ public class ProxyProperties {
 		 * 任务超时时间(分钟).
 		 */
 		private int timeoutMinutes = 5;
+
+		/**
+		 * 账号标签，用于调度使用
+		 */
+		private String tag;
 	}
 
 	@Data

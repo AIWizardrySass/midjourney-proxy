@@ -47,6 +47,9 @@ public class Task extends DomainObject {
 	@ApiModelProperty("失败原因")
 	private String failReason;
 
+	@ApiModelProperty("服务器tag标签")
+	private String tag;
+
 	public void start() {
 		this.startTime = System.currentTimeMillis();
 		this.status = TaskStatus.SUBMITTED;

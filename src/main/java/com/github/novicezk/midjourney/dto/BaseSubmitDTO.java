@@ -13,4 +13,7 @@ public abstract class BaseSubmitDTO {
 
 	@ApiModelProperty("回调地址, 为空时使用全局notifyHook")
 	protected String notifyHook;
+
+	@ApiModelProperty("服务器的标签, 用于选择执行的Discard服务器")
+	protected String tag;
 }

@@ -73,7 +73,6 @@ public class NotifyServiceImpl implements NotifyService {
 		HttpEntity<String> httpEntity = new HttpEntity<>(paramsJson, headers);
 		RestTemplate restTemplate = new RestTemplate();
 		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-		factory.setProxy(null);
 		factory.setConnectTimeout(30000);
 		factory.setReadTimeout(100);
 		restTemplate.setRequestFactory(factory);
