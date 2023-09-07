@@ -1,4 +1,4 @@
-package spring.config;
+package com.github.novicezk.midjourney.config;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.ProxyProperties;

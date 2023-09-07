@@ -33,17 +33,17 @@ public class DiscordLoadBalancer {
 
 	private final List<DiscordInstance> instances = Collections.synchronizedList(new ArrayList<>());
 
-	private final DiscordAccountHelper discordAccountHelper;
+//	private final DiscordAccountHelper discordAccountHelper;
 
 	private final DiscordAccountStoreService discordAccountStoreService;
 
 	/**
 	 * 增加账号
-	 * @param account
+	 * @param instance
 	 */
-	public boolean addAccount(DiscordAccount account) {
+	public boolean addAccount(DiscordInstance instance) {
+		DiscordAccount account = instance.account();
 		try {
-			DiscordInstance instance = this.discordAccountHelper.createDiscordInstance(account);
 			if (!account.isEnable()) {
 				return false;
 			}

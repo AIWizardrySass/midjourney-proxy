@@ -47,6 +47,7 @@ public class StartAndProgressHandler extends MessageHandler {
 			TaskCondition condition = new TaskCondition().setStatusSet(Set.of(TaskStatus.IN_PROGRESS))
 					.setProgressMessageId(message.getString("id"));
 			Task task = this.discordLoadBalancer.findRunningTask(condition).findFirst().orElse(null);
+			log.info("updata task process, task:{}", task);
 			if (task == null) {
 				return;
 			}

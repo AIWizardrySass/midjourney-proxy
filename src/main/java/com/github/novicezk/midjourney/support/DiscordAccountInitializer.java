@@ -32,6 +32,8 @@ public class DiscordAccountInitializer implements ApplicationRunner {
     private final ProxyProperties properties;
     private final DiscordAccountStoreService discordAccountStoreService;
 
+    private final DiscordAccountHelper discordAccountHelper;
+
     /**
      * 连接初始化，如果redis中存在账号，则从redis中获取，否则从配置文件中获取
      *
@@ -42,7 +44,7 @@ public class DiscordAccountInitializer implements ApplicationRunner {
         List<DiscordAccount> allAccount = discordAccountStoreService.getAllAccount();
 
         if (!CollectionUtils.isEmpty(allAccount)) {
-            allAccount.forEach(this.discordLoadBalancer::addAccount);
+            allAccount.stream().map(discordAccountHelper::createDiscordInstance).forEach(this.discordLoadBalancer::addAccount);
         } else {
             List<ProxyProperties.DiscordAccountConfig> configAccounts = this.properties.getAccounts();
 
@@ -51,7 +53,7 @@ public class DiscordAccountInitializer implements ApplicationRunner {
                 BeanUtil.copyProperties(configAccount, account);
                 account.setId(configAccount.getChannelId());
 
-                boolean res = this.discordLoadBalancer.addAccount(account);
+                boolean res = this.discordLoadBalancer.addAccount(discordAccountHelper.createDiscordInstance(account));
                 if (res) {
                     discordAccountStoreService.saveAccount(account);
                 }

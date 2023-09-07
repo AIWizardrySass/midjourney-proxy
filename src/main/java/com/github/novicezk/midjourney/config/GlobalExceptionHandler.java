@@ -1,4 +1,4 @@
-package spring.config;
+package com.github.novicezk.midjourney.config;
 
 import com.github.novicezk.midjourney.result.ResponseObject;
 import lombok.extern.slf4j.Slf4j;

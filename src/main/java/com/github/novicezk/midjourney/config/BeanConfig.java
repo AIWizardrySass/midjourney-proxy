@@ -1,4 +1,4 @@
-package spring.config;
+package com.github.novicezk.midjourney.config;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.text.CharSequenceUtil;
@@ -20,6 +20,7 @@ import com.github.novicezk.midjourney.support.DiscordAccountHelper;
 import com.github.novicezk.midjourney.support.DiscordHelper;
 import com.github.novicezk.midjourney.support.Task;
 import com.github.novicezk.midjourney.wss.handle.MessageHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Configuration
 public class BeanConfig {
 	@Autowired
@@ -123,7 +125,9 @@ public class BeanConfig {
 			String params = IoUtil.readUtf8(resource.getInputStream());
 			paramsMap.put(filename.substring(0, filename.length() - 5), params);
 		}
-		return new DiscordAccountHelper(discordHelper, this.properties, restTemplate(), taskStoreService, notifyService, messageHandlers(), paramsMap);
+		List<MessageHandler> messageHandlers = messageHandlers();
+		log.info("messageHandlers size:{}", messageHandlers.size());
+		return new DiscordAccountHelper(discordHelper, this.properties, restTemplate(), taskStoreService, notifyService, messageHandlers, paramsMap);
 	}
 
 

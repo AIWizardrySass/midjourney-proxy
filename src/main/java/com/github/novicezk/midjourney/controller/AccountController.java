@@ -7,6 +7,7 @@ import com.github.novicezk.midjourney.loadbalancer.DiscordInstance;
 import com.github.novicezk.midjourney.loadbalancer.DiscordLoadBalancer;
 import com.github.novicezk.midjourney.result.ResponseObject;
 import com.github.novicezk.midjourney.service.DiscordAccountStoreService;
+import com.github.novicezk.midjourney.support.DiscordAccountHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,6 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountController {
     private final DiscordLoadBalancer loadBalancer;
+
+    private final DiscordAccountHelper discordAccountHelper;
 
     private final DiscordAccountStoreService discordAccountStoreService;
 
@@ -70,7 +73,7 @@ public class AccountController {
         }
 
         loadBalancer.removeAccount(account.getId());
-        boolean res = loadBalancer.addAccount(account);
+        boolean res = loadBalancer.addAccount(discordAccountHelper.createDiscordInstance(account));
 
         if (res) {
             discordAccountStoreService.saveAccount(account);
